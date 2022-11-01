@@ -11,7 +11,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
     html.H3("What is your name dear?"),
-    html.Div(["Come on, no need to be so shy: ",
+    html.Div(["Enter \"ok\" to star the game: ",
               dcc.Input(id='my-input', value='?', type='text')]),
     html.Br(),
     html.Div(id='my-output'),
@@ -31,12 +31,14 @@ def generate_compliment(name):
     Input(component_id='my-input', component_property='value')
 )
 def update_output_div(name):
+    print(name)
     if name == "?":
         return ""
     if name == "ok":
-        agent = Q_agent.load_agent("best_agent.npy")
+        agent = Q_agent.load_agent("game2048/best_agent.npy")
         est = agent.evaluate
         results = Game.trial(estimator=est, num=100)
+        print(results)
     return generate_compliment(name)
 
 
